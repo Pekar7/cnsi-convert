@@ -1,0 +1,174 @@
+{
+  "requestId": "571c9d75-6681-4efa-82e8-1286a18a9597",
+  "tableCode": "ic00_admjd",
+  "tableName": "ic00_admjd. Администрации железных дорог",
+  "records": [
+    {
+      "guid": "0333f5ed-ec84-4d59-b2dd-cc0552f05b7r",
+      "beginDate": "2000-01-01T00:00:00",
+      "endDate": "2023-09-25T23:59:59.998",
+      "corTime": "2011-09-07T16:21:02.649",
+      "fields": [
+        {
+          "name": "version_no",
+          "type": "integer",
+          "value": 1
+        },
+        {
+          "name": "operation_type",
+          "type": "textField",
+          "value": "I"
+        },
+        {
+          "name": "adm_kod",
+          "type": "integer",
+          "value": 78
+        },
+        {
+          "name": "sname_lat",
+          "type": "textField",
+          "value": "HZ"
+        },
+        {
+          "name": "system_user_stamp",
+          "type": "access_users",
+          "value": "admin"
+        },
+        {
+          "name": "external_id",
+          "type": "textField",
+          "value": "100040"
+        },
+        {
+          "name": "date_end",
+          "type": "dateTime",
+          "value": "2023-09-25T23:59:59.999"
+        },
+        {
+          "name": "active_flag",
+          "type": "flag",
+          "value": false
+        },
+        {
+          "name": "system_create_stamp",
+          "type": "dateTime",
+          "value": "2011-09-07T16:21:02.649"
+        },
+        {
+          "name": "date_begin",
+          "type": "dateTime",
+          "value": "2000-01-01T00:00:00"
+        },
+        {
+          "name": "sname_rus",
+          "type": "textField",
+          "value": "ХЗ"
+        },
+        {
+          "name": "record_union_no",
+          "type": "textField",
+          "value": "IC00.H_ADMJD-78"
+        },
+        {
+          "name": "name",
+          "type": "textField",
+          "value": "Железные дороги Хорватии"
+        },
+        {
+          "name": "system_update_stamp",
+          "type": "dateTime",
+          "value": "2011-09-07T16:21:02.649"
+        },
+        {
+          "name": "status",
+          "type": "record_statuses",
+          "value": "ORIGINAL"
+        }
+      ]
+    },
+    {
+      "guid": "03d69740-a934-492e-aad3-07b81d1037a7",
+      "beginDate": "2000-01-01T00:00:00",
+      "endDate": "2005-11-30T00:00:00",
+      "corTime": "2011-09-07T16:21:02.649",
+      "fields": [
+        {
+          "name": "version_no",
+          "type": "integer",
+          "value": 1
+        },
+        {
+          "name": "operation_type",
+          "type": "textField",
+          "value": "U"
+        },
+        {
+          "name": "adm_kod",
+          "type": "integer",
+          "value": 24
+        },
+        {
+          "name": "sname_lat",
+          "type": "textField",
+          "value": "LG"
+        },
+        {
+          "name": "external_id",
+          "type": "textField",
+          "value": "100005"
+        },
+        {
+          "name": "date_end",
+          "type": "dateTime",
+          "value": "2005-11-30T00:00:00"
+        },
+        {
+          "name": "active_flag",
+          "type": "flag",
+          "value": false
+        },
+        {
+          "name": "system_create_stamp",
+          "type": "dateTime",
+          "value": "2011-09-07T16:21:02.649"
+        },
+        {
+          "name": "stran_kod",
+          "type": "ic00_stran",
+          "value": 440
+        },
+        {
+          "name": "date_begin",
+          "type": "dateTime",
+          "value": "2000-01-01T00:00:00"
+        },
+        {
+          "name": "sname_rus",
+          "type": "textField",
+          "value": "ЛГ"
+        },
+        {
+          "name": "record_union_no",
+          "type": "textField",
+          "value": "IC00.H_ADMJD-24"
+        },
+        {
+          "name": "name",
+          "type": "textField",
+          "value": "АОСН Литовские железные дороги"
+        },
+        {
+          "name": "system_update_stamp",
+          "type": "dateTime",
+          "value": "2011-09-07T16:21:02.649"
+        },
+        {
+          "name": "status",
+          "type": "record_statuses",
+          "value": "ORIGINAL"
+        }
+      ]
+    }
+  ]
+}
+
