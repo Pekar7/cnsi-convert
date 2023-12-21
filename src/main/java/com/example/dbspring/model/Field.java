@@ -66,7 +66,7 @@ public class Field {
     private String stran_kod;
 
     @JsonProperty("blocked_by_user")
-    private String blocked_by_user;
+    private String blockedByUser;
 
     @JsonProperty("system_author_stamp")
     private String system_author_stamp;

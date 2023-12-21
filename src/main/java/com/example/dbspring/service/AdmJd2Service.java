@@ -1,9 +1,8 @@
 package com.example.dbspring.service;
 
-import com.example.dbspring.entity.Admjd2;
+import com.example.dbspring.model.Field;
 import com.example.dbspring.model.MainEntity;
 import com.example.dbspring.model.Record;
-import com.example.dbspring.repo.AdmjdRepo;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -13,25 +12,29 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 @Slf4j
 @Service
 public class AdmJd2Service {
 
-    private final AdmjdRepo admjdRepo;
+    private final DataSource dataSource;
 
     @Autowired
-    public AdmJd2Service(AdmjdRepo admjdRepo) {
-        this.admjdRepo = admjdRepo;
+    public AdmJd2Service(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     public void refactorAndSaveRequest(String filePath) {
@@ -47,14 +50,65 @@ public class AdmJd2Service {
             List<Record> records = main.getRecords();
 
             for (Record record : records) {
-                ModelMapper modelMapper = new ModelMapper();
-                Admjd2 admjd2 = modelMapper.map(record.getFields(), Admjd2.class);
-                log.info("Correct mapped Field to Admjd2 " + admjd2);
-                admjdRepo.save(admjd2);
+                insertData(record.getFields());
             }
 
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public void insertData(Field field) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = dataSource.getConnection();
+
+            String sqlQuery = "INSERT INTO admjd1_new " +
+                    "(activeFlag, admKod, blocked_by_user, dateBegin, dateEnd, externalId, name, operationType, " +
+                    "recordUnionNo, record_uuid, snameLat, snameRus, status, stran_kod, systemCreateStamp, " +
+                    "systemUpdateStamp, systemUserStamp, system_author_stamp, type, versionNo) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            preparedStatement = connection.prepareStatement(sqlQuery);
+
+            preparedStatement.setString(1, field.getActiveFlag());
+            preparedStatement.setString(2, field.getAdmKod());
+            preparedStatement.setString(3, field.getBlockedByUser());
+            preparedStatement.setString(4, field.getDateBegin());
+            preparedStatement.setString(5, field.getDateEnd());
+            preparedStatement.setString(6, field.getExternalId());
+            preparedStatement.setString(7, field.getName());
+            preparedStatement.setString(8, field.getOperationType());
+            preparedStatement.setString(9, field.getSnameRus());
+            preparedStatement.setString(10, field.getRecord_uuid());
+            preparedStatement.setString(11, field.getSnameLat());
+            preparedStatement.setString(12, field.getSnameRus());
+            preparedStatement.setString(13, field.getStatus());
+            preparedStatement.setString(14, field.getStran_kod());
+            preparedStatement.setString(15, field.getSystemCreateStamp());
+            preparedStatement.setString(16, field.getSystemUpdateStamp());
+            preparedStatement.setString(17, field.getSystemUserStamp());
+            preparedStatement.setString(18, field.getSystem_author_stamp());
+            preparedStatement.setString(19, field.getType());
+            preparedStatement.setString(20, field.getVersionNo());
+
+            preparedStatement.executeUpdate();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
