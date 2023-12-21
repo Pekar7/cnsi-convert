@@ -1,0 +1,32 @@
+{
+  "requestId": "571c9d75-6681-4efa-82e8-1286a18a9591",
+  "tableCode": "ic00_admjd",
+  "tableName": "ic00_admjd. Администрации железных дорог",
+  "records": [
+    {
+      "guid": "0333f5ed-ec84-4d59-b2dd-cc0552f05b7d",
+      "beginDate": "2000-01-01T00:00:00",
+      "endDate": "2023-09-25T23:59:59.999",
+      "corTime": "2011-09-07T16:21:02.649",
+      "fields": {
+        "adm_kod": 78,
+        "version_no": 1,
+        "operation_type":"I",
+        "sname_lat": "HZ",
+        "system_user_stamp": "admin",
+        "external_id": "100040",
+        "date_end": "2023-09-25T23:59:59.999",
+        "active_flag": false,
+        "system_create_stamp": "2011-09-07T16:21:02.649",
+        "date_begin": "2000-01-01T00:00:00",
+        "sname_rus": "ХЗ",
+        "record_union_no": "IC00.H_ADMJD-78",
+        "name": "Железные дороги Хорватии",
+        "system_update_stamp": "2011-09-07T16:21:02.649",
+        "status": "ORIGINAL"
+      }
+    }
+    ]
+}
+
+

@@ -84,7 +84,7 @@ public class Main2 {
     }
 
     public static void main(String[] args) {
-        String filePath = "src/main/resources/ResponseAdmJd.json";
+        String filePath = "src/main/resources/responseAdmJd.json";
 
         try {
             String fileContent = readFileToString(filePath);

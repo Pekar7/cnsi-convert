@@ -1,31 +1,15 @@
-package com.example.dbspring.entity;
+package com.example.dbspring.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.io.Serializable;
-import java.util.List;
-
+@Getter
+@Setter
 @Data
-@Entity
-public class Field implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "record_id")
-    private Record record;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "field_id")
-    private List<FieldAttribute> fieldAttributes;
+public class Field {
 
     @JsonProperty("version_no")
     private String versionNo;
@@ -48,7 +32,6 @@ public class Field implements Serializable {
     @JsonProperty("external_id")
     private String externalId;
 
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS", timezone = "UTC")
     @JsonProperty("date_end")
     private String dateEnd;
 
