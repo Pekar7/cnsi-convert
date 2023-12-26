@@ -5,7 +5,6 @@ import com.example.dbspring.model.MainEntity;
 import com.example.dbspring.model.Record;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -13,7 +12,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
@@ -41,8 +39,9 @@ public class AdmJd2Service {
         try {
             String fileContent = readFileToString(filePath); //берем json cnsi
             String correct = transformJson(fileContent); //применяем key:value
+            log.info("Key:Value JSON " + correct);
             String origin = refactor(correct); // записываем json в нужный формат
-            log.info("Successfully format in key:value JSON " + origin);
+            log.info("Finally JSON " + origin);
 
             ObjectMapper objectMapper = new ObjectMapper();
             MainEntity main = objectMapper.readValue(origin, MainEntity.class);
@@ -50,7 +49,7 @@ public class AdmJd2Service {
             List<Record> records = main.getRecords();
 
             for (Record record : records) {
-                insertData(record.getFields());
+                insertData(record.getFields(), main.getTableCode().substring(5, 10));
             }
 
         } catch (IOException e) {
@@ -58,14 +57,14 @@ public class AdmJd2Service {
         }
     }
 
-    public void insertData(Field field) {
+    public void insertData(Field field, String tableName) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
             connection = dataSource.getConnection();
 
-            String sqlQuery = "INSERT INTO admjd1_new " +
+            String sqlQuery = "INSERT INTO " + tableName +
                     "(activeFlag, admKod, blocked_by_user, dateBegin, dateEnd, externalId, name, operationType, " +
                     "recordUnionNo, record_uuid, snameLat, snameRus, status, stran_kod, systemCreateStamp, " +
                     "systemUpdateStamp, systemUserStamp, system_author_stamp, type, versionNo) " +
@@ -155,10 +154,24 @@ public class AdmJd2Service {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readTree(inputJson);
 
-            if (jsonNode.has("records")) { // узел рекорда
-                jsonNode.get("records").forEach(record -> {
-                    if (record.has("fields")) { //если есть field
-                        record.get("fields").forEach(field -> {
+            String tableCode = jsonNode.path("tableCode").asText();
+            String table = tableCode.substring(5, 10);
+            String script = "";
+
+            if (jsonNode.has("records")) {
+                JsonNode records = jsonNode.get("records");
+                int recordsSize = records.size();
+
+                for (int i = 0; i < recordsSize; i++) {
+                    JsonNode record = records.get(i);
+
+                    if (record.has("fields")) {
+                        JsonNode fields = record.get("fields");
+                        int fieldsSize = fields.size();
+
+                        for (int j = 0; j < fieldsSize; j++) {
+                            JsonNode field = fields.get(j);
+
                             if (field.has("name") && field.has("value") && field.has("type")) {
                                 String name = field.get("name").asText();
                                 String value = field.get("value").asText();
@@ -170,12 +183,22 @@ public class AdmJd2Service {
 
                                 ((ObjectNode) field).put(name, value);
                                 ((ObjectNode) field).put("type", type);
-                            }
-                        });
-                    }
-                });
-            }
 
+                                if (type.equals("textField")) {
+                                    String typePostgres = type.replace("textField", "VARCHAR");
+                                    if (j == fieldsSize - 1) {
+                                        script += name + " " + typePostgres + " ";
+                                    } else {
+                                        script += name + " " + typePostgres + ", ";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            System.out.println("T" + table);
+            createDDL(table, script);
             return objectMapper.writeValueAsString(jsonNode);
 
         } catch (Exception e) {
@@ -184,69 +207,12 @@ public class AdmJd2Service {
         }
     }
 
-    public static String swapFields(String jsonString) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode jsonNode = objectMapper.readTree(jsonString);
 
-            if (jsonNode.isObject()) {
-                ObjectNode swappedNode = objectMapper.createObjectNode();
-
-                jsonNode.fields().forEachRemaining(entry -> {
-                    if (entry.getKey().equals("records") && entry.getValue().isArray()) {
-                        ArrayNode originalRecords = (ArrayNode) entry.getValue();
-                        ArrayNode swappedRecords = objectMapper.createArrayNode();
-
-                        originalRecords.elements().forEachRemaining(record -> {
-                            if (record.isObject()) {
-                                ObjectNode swappedRecord = objectMapper.createObjectNode();
-
-                                record.fields().forEachRemaining(recordEntry -> {
-                                    if (recordEntry.getKey().equals("fields") && recordEntry.getValue().isArray()) {
-                                        ArrayNode originalFields = (ArrayNode) recordEntry.getValue();
-                                        ArrayNode swappedFields = objectMapper.createArrayNode();
-
-                                        originalFields.elements().forEachRemaining(field -> {
-                                            if (field.isObject()) {
-                                                ObjectNode swappedField = objectMapper.createObjectNode();
-                                                field.fields().forEachRemaining(fieldEntry -> {
-                                                    swappedField.put(fieldEntry.getValue().asText(), fieldEntry.getKey());
-                                                });
-                                                swappedFields.add(swappedField);
-                                            } else {
-                                                // If the field is not an object, keep it as is
-                                                swappedFields.add(field);
-                                            }
-                                        });
-
-                                        swappedRecord.set(recordEntry.getKey(), swappedFields);
-                                    } else {
-                                        // For other fields, keep them as is
-                                        swappedRecord.set(recordEntry.getKey(), recordEntry.getValue());
-                                    }
-                                });
-
-                                swappedRecords.add(swappedRecord);
-                            } else {
-                                // If the record is not an object, keep it as is
-                                swappedRecords.add(record);
-                            }
-                        });
-
-                        swappedNode.set(entry.getKey(), swappedRecords);
-                    } else {
-                        swappedNode.set(entry.getKey(), entry.getValue());
-                    }
-                });
-
-                return swappedNode.toString();
-            } else {
-                return jsonString;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return jsonString;
-        }
+    private static void createDDL(String tableCode, String script) {
+        String ddlScript = "CREATE TABLE " + tableCode + " ("
+                + script + ");";
+        System.out.println();
+        System.out.println(ddlScript);
+        System.out.println();
     }
-
 }

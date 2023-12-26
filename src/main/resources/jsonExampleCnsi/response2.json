@@ -1,62 +1,143 @@
 {
-  "requestId": "571c9d75-6681-4efa-82e8-1286a18a9591",
-  "tableCode": "ic00_admjd",
-  "tableName": "ic00_admjd. Администрации железных дорог",
-  "records": [
+  "requestId":"571c9d75-6681-4efa-82e8-1286a18a9597",
+  "tableCode":"ic00_admjd",
+  "tableName":"ic00_admjd. Администрации железных дорог",
+  "records":[
     {
-      "guid": "0333f5ed-ec84-4d59-b2dd-cc0552f05b7d",
-      "beginDate": "2000-01-01T00:00:00",
-      "endDate": "2023-09-25T23:59:59.999",
-      "corTime": "2011-09-07T16:21:02.649",
-      "fields": [
+      "guid":"0333f5ed-ec84-4d59-b2dd-cc0552f05b7r",
+      "beginDate":"2000-01-01T00:00:00",
+      "endDate":"2023-09-25T23:59:59.998",
+      "corTime":"2011-09-07T16:21:02.649",
+      "fields":[
         {
-          "version_no": 1
+          "version_no":"1",
+          "type":"integer"
         },
         {
-          "operation_type":"I"
+          "operation_type":"I",
+          "type":"textField"
         },
         {
-          "adm_kod": 78
+          "adm_kod":"78",
+          "type":"int0eger"
         },
         {
-          "sname_lat": "HZ"
+          "sname_lat":"HZ",
+          "type":"textField"
         },
         {
-          "system_user_stamp": "admin"
+          "system_user_stamp":"admin",
+          "type":"access_users"
         },
         {
-          "external_id": "100040"
+          "external_id":"100040",
+          "type":"textField"
         },
         {
-          "date_end": "2023-09-25T23:59:59.999"
+          "date_end":"2023-09-25T23:59:59.999",
+          "type":"dateTime"
         },
         {
-          "active_flag": false
+          "active_flag":"false",
+          "type":"flag"
         },
         {
-           "system_create_stamp": "2011-09-07T16:21:02.649"
+          "system_create_stamp":"2011-09-07T16:21:02.649",
+          "type":"dateTime"
         },
         {
-           "date_begin": "2000-01-01T00:00:00"
+          "date_begin":"2000-01-01T00:00:00",
+          "type":"dateTime"
         },
         {
-           "sname_rus": "ХЗ"
+          "sname_rus":"ХЗ",
+          "type":"textField"
         },
         {
-           "record_union_no": "IC00.H_ADMJD-78"
+          "record_union_no":"IC00.H_ADMJD-78",
+          "type":"textField"
         },
         {
-           "name": "Железные дороги Хорватии"
+          "name":"Железные дороги Хорватии",
+          "type":"textField"
         },
         {
-           "system_update_stamp": "2011-09-07T16:21:02.649"
+          "system_update_stamp":"2011-09-07T16:21:02.649",
+          "type":"dateTime"
         },
         {
-           "status": "ORIGINAL"
+          "status":"ORIGINAL",
+          "type":"record_statuses"
+        }
+      ]
+    },
+    {
+      "guid":"03d69740-a934-492e-aad3-07b81d1037a7",
+      "beginDate":"2000-01-01T00:00:00",
+      "endDate":"2005-11-30T00:00:00",
+      "corTime":"2011-09-07T16:21:02.649",
+      "fields":[
+        {
+          "version_no":"1",
+          "type":"integer"
+        },
+        {
+          "operation_type":"U",
+          "type":"textField"
+        },
+        {
+          "adm_kod":"24",
+          "type":"integer"
+        },
+        {
+          "sname_lat":"LG",
+          "type":"textField"
+        },
+        {
+          "external_id":"100005",
+          "type":"textField"
+        },
+        {
+          "date_end":"2005-11-30T00:00:00",
+          "type":"dateTime"
+        },
+        {
+          "active_flag":"false",
+          "type":"flag"
+        },
+        {
+          "system_create_stamp":"2011-09-07T16:21:02.649",
+          "type":"dateTime"
+        },
+        {
+          "stran_kod":"440",
+          "type":"ic00_stran"
+        },
+        {
+          "date_begin":"2000-01-01T00:00:00",
+          "type":"dateTime"
+        },
+        {
+          "sname_rus":"ЛГ",
+          "type":"textField"
+        },
+        {
+          "record_union_no":"IC00.H_ADMJD-24",
+          "type":"textField"
+        },
+        {
+          "name":"АОСН Литовские железные дороги",
+          "type":"textField"
+        },
+        {
+          "system_update_stamp":"2011-09-07T16:21:02.649",
+          "type":"dateTime"
+        },
+        {
+          "status":"ORIGINAL",
+          "type":"record_statuses"
         }
       ]
     }
   ]
 }
-
-
