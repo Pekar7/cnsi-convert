@@ -154,8 +154,8 @@ public class AdmJd2Service {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readTree(inputJson);
 
-            String tableCode = jsonNode.path("tableCode").asText();
-            String table = tableCode.substring(5, 10);
+            String table = jsonNode.path("tableCode").asText();
+            String tableCode = table.substring(5, 10);
             String script = "";
 
             if (jsonNode.has("records")) {
@@ -183,22 +183,11 @@ public class AdmJd2Service {
 
                                 ((ObjectNode) field).put(name, value);
                                 ((ObjectNode) field).put("type", type);
-
-                                if (type.equals("textField")) {
-                                    String typePostgres = type.replace("textField", "VARCHAR");
-                                    if (j == fieldsSize - 1) {
-                                        script += name + " " + typePostgres + " ";
-                                    } else {
-                                        script += name + " " + typePostgres + ", ";
-                                    }
-                                }
                             }
                         }
                     }
                 }
             }
-            System.out.println("T" + table);
-            createDDL(table, script);
             return objectMapper.writeValueAsString(jsonNode);
 
         } catch (Exception e) {
