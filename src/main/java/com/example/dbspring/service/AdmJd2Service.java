@@ -22,6 +22,7 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Slf4j
@@ -49,7 +50,8 @@ public class AdmJd2Service {
             List<Record> records = main.getRecords();
 
             for (Record record : records) {
-                insertData(record.getFields(), main.getTableCode().substring(5, 10));
+                System.out.println("Название таблицы: " + main.getTableCode().substring(5, 10));
+                insertData(record.getFields(), main.getTableCode().substring(5, 10), record.getGuid());
             }
 
         } catch (IOException e) {
@@ -57,46 +59,51 @@ public class AdmJd2Service {
         }
     }
 
-    public void insertData(Field field, String tableName) {
+    /*
+    , operation_type, sname_lat, system_user_stamp," +
+                    "external_id, date_end, system_create_stamp, date_begin, sname_rus, record_union_no," +
+                    "name, system_update_stamp, status, type, stran_kod, blocked_by_user, system_author_stamp, record_uuid
+     */
+
+    public void insertData(Field field, String tableName, String guid) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
+        System.out.println(field);
         try {
             connection = dataSource.getConnection();
 
-            String sqlQuery = "INSERT INTO " + tableName +
-                    "(activeFlag, admKod, blocked_by_user, dateBegin, dateEnd, externalId, name, operationType, " +
-                    "recordUnionNo, record_uuid, snameLat, snameRus, status, stran_kod, systemCreateStamp, " +
-                    "systemUpdateStamp, systemUserStamp, system_author_stamp, type, versionNo) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sqlQuery = "INSERT INTO " + "ic00_admjd" +
+                    " (version_no, adm_kod, active_flag, operation_type, sname_lat," +
+                    "system_user_stamp, external_id, date_end, system_create_stamp, date_begin," +
+                    "sname_rus, record_union_no, name, system_update_stamp, status" +
+                    ") " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             preparedStatement = connection.prepareStatement(sqlQuery);
 
-            preparedStatement.setString(1, field.getActiveFlag());
-            preparedStatement.setString(2, field.getAdmKod());
-            preparedStatement.setString(3, field.getBlockedByUser());
-            preparedStatement.setString(4, field.getDateBegin());
-            preparedStatement.setString(5, field.getDateEnd());
-            preparedStatement.setString(6, field.getExternalId());
-            preparedStatement.setString(7, field.getName());
-            preparedStatement.setString(8, field.getOperationType());
-            preparedStatement.setString(9, field.getSnameRus());
-            preparedStatement.setString(10, field.getRecord_uuid());
-            preparedStatement.setString(11, field.getSnameLat());
-            preparedStatement.setString(12, field.getSnameRus());
-            preparedStatement.setString(13, field.getStatus());
-            preparedStatement.setString(14, field.getStran_kod());
-            preparedStatement.setString(15, field.getSystemCreateStamp());
-            preparedStatement.setString(16, field.getSystemUpdateStamp());
-            preparedStatement.setString(17, field.getSystemUserStamp());
-            preparedStatement.setString(18, field.getSystem_author_stamp());
-            preparedStatement.setString(19, field.getType());
-            preparedStatement.setString(20, field.getVersionNo());
+            preparedStatement.setInt(1, field.getVersionNo());
+            preparedStatement.setInt(2, field.getAdmKod());
+            preparedStatement.setBoolean(3, field.getActiveFlag());
+            preparedStatement.setString(4, field.getOperationType());
+            preparedStatement.setString(5, field.getSnameLat());
+            preparedStatement.setString(6, field.getSystemUserStamp());
+            preparedStatement.setString(7, field.getExternalId());
+            preparedStatement.setString(8, field.getDateEnd());
+            preparedStatement.setString(9, field.getSystemCreateStamp());
+            preparedStatement.setString(10, field.getDateBegin());
+            preparedStatement.setString(11, field.getSnameRus());
+            preparedStatement.setString(12, field.getRecordUnionNo());
+            preparedStatement.setString(13, field.getName());
+            preparedStatement.setString(14, field.getSystemUpdateStamp());
+            preparedStatement.setString(15, field.getStatus());
 
+            // Выполняем запрос
             preparedStatement.executeUpdate();
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
+            // Выполняем запрос
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         } finally {
             try {
                 if (preparedStatement != null) {
@@ -195,7 +202,6 @@ public class AdmJd2Service {
             return null;
         }
     }
-
 
     private static void createDDL(String tableCode, String script) {
         String ddlScript = "CREATE TABLE " + tableCode + " ("

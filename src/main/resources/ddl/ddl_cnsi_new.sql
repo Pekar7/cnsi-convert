@@ -1,9 +1,8 @@
-CREATE TABLE mdm.ic00_admjd (
-                                record_no varchar(128) NOT NULL,
+CREATE TABLE main.ic00_admjd (
                                 original_record_no varchar(128) NULL,
-                                adm_kod int8 NULL,
+                                adm_kod integer NULL,
                                 stran_kod varchar(128) NULL,
-                                "name" varchar(60) NULL,
+                                name varchar(60) NULL,
                                 sname_rus varchar(7) NULL,
                                 sname_lat varchar(7) NULL,
                                 status varchar(128) NULL,
@@ -15,12 +14,11 @@ CREATE TABLE mdm.ic00_admjd (
                                 date_begin timestamp NULL,
                                 date_end timestamp NULL,
                                 record_union_no varchar(128) NULL,
-                                active_flag int4 NULL,
-                                version_no int8 NULL,
+                                active_flag integer NULL,
+                                version_no integer NULL,
                                 record_uuid varchar(128) NULL,
                                 operation_type varchar(1) NULL,
-                                protected_flag int4 NOT NULL DEFAULT 0,
-                                revision int4 NULL,
-                                external_id varchar(128) NULL,
-                                CONSTRAINT ic00_admjd_pkey PRIMARY KEY (record_no)
+                                protected_flag integer NOT NULL DEFAULT 0,
+                                revision integer NULL,
+                                external_id varchar(128) NULL
 );

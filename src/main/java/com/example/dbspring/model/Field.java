@@ -2,6 +2,7 @@ package com.example.dbspring.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,13 +13,13 @@ import lombok.Setter;
 public class Field {
 
     @JsonProperty("version_no")
-    private String versionNo;
+    private Integer versionNo;
 
     @JsonProperty("adm_kod")
-    private String admKod;
+    private Integer admKod;
 
     @JsonProperty("active_flag")
-    private String activeFlag;
+    private Boolean activeFlag;
 
     @JsonProperty("operation_type")
     private String operationType;
@@ -33,13 +34,14 @@ public class Field {
     private String externalId;
 
     @JsonProperty("date_end")
+//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "UTC")
     private String dateEnd;
 
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS", timezone = "UTC")
+//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS", timezone = "UTC")
     @JsonProperty("system_create_stamp")
     private String systemCreateStamp;
 
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS", timezone = "UTC")
+//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "UTC")
     @JsonProperty("date_begin")
     private String dateBegin;
 
@@ -52,7 +54,7 @@ public class Field {
     @JsonProperty("name")
     private String name;
 
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS", timezone = "UTC")
+//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS", timezone = "UTC")
     @JsonProperty("system_update_stamp")
     private String systemUpdateStamp;
 
@@ -63,15 +65,30 @@ public class Field {
     private String type;
 
     @JsonProperty("stran_kod")
-    private String stran_kod;
+    private String stranKod;
 
     @JsonProperty("blocked_by_user")
     private String blockedByUser;
 
     @JsonProperty("system_author_stamp")
-    private String system_author_stamp;
+    private String systemAuthorStamp;
 
     @JsonProperty("record_uuid")
-    private String record_uuid;
+    private String recordUuid;
 
+    @JsonProperty("revision")
+    private Integer revision;
+
+    @JsonProperty("protected_flag")
+    private Integer protectedFlag;
+
+    @JsonProperty("original_record_no")
+    private String originalRecordNo;
+
+    /*
+    @Id
+    @JsonProperty("record_no")
+    private String recordNo;
+
+     */
 }

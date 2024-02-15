@@ -19,7 +19,7 @@ public class MainController {
 
     @GetMapping("/hello")
     public String main() {
-        String filePath = "src/main/resources/jsonExampleCnsi/response.json";
+        String filePath = "src/main/resources/jsonExampleCnsi/responseAdmJd.json";
         admJd2Service.refactorAndSaveRequest(filePath);
         return "Successfully add cnsi information in database";
     }
